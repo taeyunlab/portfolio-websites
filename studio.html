@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BLANC Studio — 서울 마포 프리미엄 필라테스 스튜디오</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Sans+KR:wght@300;400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --white: #FAFAF8;
+    --off: #F2F0EC;
+    --light: #E8E4DC;
+    --sand: #D4C9B5;
+    --warm: #B5A48C;
+    --dark: #2A2520;
+    --black: #1A1612;
+    --accent: #8B6F4E;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--white);
+    color: var(--dark);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 32px 80px;
+    display: flex; justify-content: space-between; align-items: center;
+    transition: background 0.5s, padding 0.5s;
+  }
+  nav.scrolled {
+    background: rgba(250,250,248,0.95);
+    backdrop-filter: blur(20px);
+    padding: 20px 80px;
+    border-bottom: 1px solid var(--light);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300; font-size: 26px; letter-spacing: 8px;
+    text-transform: uppercase; color: var(--dark);
+  }
+  .nav-links { display: flex; gap: 48px; list-style: none; }
+  .nav-links a {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300; font-size: 12px; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--dark);
+    text-decoration: none; opacity: 0.6;
+    transition: opacity 0.3s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -4px; left: 0; right: 0; height: 1px;
+    background: var(--accent); transform: scaleX(0); transition: transform 0.3s;
+  }
+  .nav-links a:hover { opacity: 1; }
+  .nav-links a:hover::after { transform: scaleX(1); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid; grid-template-columns: 1fr 1fr;
+    position: relative;
+  }
+  .hero-left {
+    display: flex; flex-direction: column;
+    justify-content: center; padding: 160px 80px 80px;
+    position: relative;
+  }
+  .hero-tag {
+    font-family: 'Jost', sans-serif;
+    font-weight: 200; font-size: 11px;
+    letter-spacing: 6px; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 40px;
+    animation: fadeUp 1.2s 0.3s both;
+  }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300; font-style: italic;
+    font-size: clamp(52px, 6vw, 84px);
+    line-height: 1.1; color: var(--dark);
+    margin-bottom: 40px;
+    animation: fadeUp 1.2s 0.5s both;
+  }
+  .hero-title strong {
+    font-style: normal; font-weight: 600;
+    display: block;
+  }
+  .hero-body {
+    font-size: 15px; line-height: 2.0;
+    color: var(--dark); opacity: 0.6;
+    max-width: 380px; margin-bottom: 56px;
+    animation: fadeUp 1.2s 0.7s both;
+  }
+  .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; animation: fadeUp 1.2s 0.9s both; }
+  .btn-main {
+    background: var(--dark); color: var(--white);
+    padding: 16px 40px;
+    font-family: 'Jost', sans-serif;
+    font-weight: 300; font-size: 11px;
+    letter-spacing: 4px; text-transform: uppercase;
+    text-decoration: none; transition: all 0.4s;
+    border: 1px solid var(--dark);
+  }
+  .btn-main:hover { background: var(--accent); border-color: var(--accent); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--dark); padding: 16px 40px;
+    font-family: 'Jost', sans-serif;
+    font-weight: 300; font-size: 11px;
+    letter-spacing: 4px; text-transform: uppercase;
+    text-decoration: none; border: 1px solid var(--sand);
+    transition: all 0.4s;
+  }
+  .btn-ghost:hover { border-color: var(--dark); }
+  .hero-right {
+    background: var(--off);
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .hero-visual-circle {
+    width: 380px; height: 380px; border-radius: 50%;
+    background: var(--light);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    animation: fadeIn 1.5s 1s both;
+  }
+  .hero-visual-circle::before {
+    content: ''; position: absolute;
+    width: 440px; height: 440px; border-radius: 50%;
+    border: 1px solid var(--sand);
+    animation: rotateSlow 30s linear infinite;
+  }
+  .hero-visual-circle::after {
+    content: ''; position: absolute;
+    width: 500px; height: 500px; border-radius: 50%;
+    border: 1px dashed var(--light);
+    animation: rotateSlow 50s linear infinite reverse;
+  }
+  .studio-icon { font-size: 80px; z-index: 1; }
+  .hero-badge {
+    position: absolute; bottom: 60px; left: 60px;
+    background: var(--white); padding: 20px 28px;
+    animation: fadeUp 1.2s 1.2s both;
+  }
+  .hero-badge-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 40px; font-weight: 300; line-height: 1;
+    color: var(--accent);
+  }
+  .hero-badge-label {
+    font-family: 'Jost', sans-serif;
+    font-weight: 200; font-size: 10px;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: var(--dark); opacity: 0.5; margin-top: 4px;
+  }
+
+  /* PHILOSOPHY */
+  .philosophy {
+    padding: 160px 80px;
+    display: grid; grid-template-columns: 1fr 2fr; gap: 120px;
+    align-items: start;
+  }
+  .philosophy-left { position: sticky; top: 120px; }
+  .section-label {
+    font-family: 'Jost', sans-serif;
+    font-weight: 200; font-size: 10px;
+    letter-spacing: 5px; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 24px;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300; font-size: clamp(36px, 4vw, 56px);
+    line-height: 1.2; color: var(--dark);
+  }
+  .section-title em { font-style: italic; }
+  .philosophy-right { padding-top: 16px; }
+  .philosophy-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 24px;
+    line-height: 1.6; color: var(--accent);
+    margin-bottom: 40px;
+    padding-left: 24px;
+    border-left: 2px solid var(--sand);
+  }
+  .philosophy-body {
+    font-size: 15px; line-height: 2.0;
+    color: var(--dark); opacity: 0.65;
+    margin-bottom: 20px;
+  }
+  .philosophy-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 2px; margin-top: 60px;
+  }
+  .philo-card {
+    background: var(--off);
+    padding: 40px 32px;
+  }
+  .philo-num {
+    font-family: 'Jost', sans-serif;
+    font-weight: 200; font-size: 11px;
+    letter-spacing: 3px; color: var(--accent); margin-bottom: 16px;
+  }
+  .philo-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 400;
+    color: var(--dark); margin-bottom: 10px;
+  }
+  .philo-desc { font-size: 13px; line-height: 1.8; color: var(--dark); opacity: 0.6; }
+
+  /* CLASSES */
+  .classes { background: var(--dark); padding: 160px 80px; }
+  .classes-header { margin-bottom: 80px; }
+  .classes-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300; font-size: clamp(48px, 6vw, 80px);
+    color: var(--white); line-height: 1;
+  }
+  .classes-title em { font-style: italic; color: var(--sand); }
+  .classes-list { display: flex; flex-direction: column; gap: 2px; }
+  .class-row {
+    background: rgba(255,255,255,0.04);
+    padding: 36px 48px;
+    display: grid; grid-template-columns: 60px 1fr auto auto;
+    gap: 40px; align-items: center;
+    border: 1px solid rgba(255,255,255,0.04);
+    transition: background 0.4s, padding-left 0.4s;
+    cursor: pointer;
+  }
+  .class-row:hover { background: rgba(255,255,255,0.08); padding-left: 64px; }
+  .class-idx {
+    font-family: 'Jost', sans-serif;
+    font-weight: 200; font-size: 12px;
+    letter-spacing: 2px; color: var(--accent);
+  }
+  .class-info-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px; font-weight: 400;
+    color: var(--white); margin-bottom: 6px;
+  }
+  .class-info-sub {
+    font-family: 'Jost', sans-serif;
+    font-weight: 200; font-size: 11px;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--sand); opacity: 0.6;
+  }
+  .class-level {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300; font-size: 11px;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--warm);
+    padding: 6px 14px; border: 1px solid rgba(180,164,140,0.3);
+    white-space: nowrap;
+  }
+  .class-arrow {
+    font-size: 18px; color: var(--sand); opacity: 0.4;
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  .class-row:hover .class-arrow { opacity: 1; transform: translateX(6px); }
+
+  /* PRICING */
+  .pricing { padding: 160px 80px; }
+  .pricing-inner { max-width: 960px; margin: 0 auto; }
+  .pricing-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300; font-style: italic;
+    font-size: clamp(48px, 5vw, 72px);
+    color: var(--dark); margin-bottom: 80px; text-align: center;
+  }
+  .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+  .plan-card {
+    background: var(--off);
+    padding: 52px 40px;
+    position: relative; transition: background 0.3s;
+  }
+  .plan-card.highlight { background: var(--dark); }
+  .plan-card:hover:not(.highlight) { background: var(--light); }
+  .plan-name {
+    font-family: 'Jost', sans-serif;
+    font-weight: 200; font-size: 11px;
+    letter-spacing: 4px; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 32px;
+  }
+  .plan-card.highlight .plan-name { color: var(--sand); }
+  .plan-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300; font-size: 52px;
+    line-height: 1; color: var(--dark); margin-bottom: 4px;
+  }
+  .plan-card.highlight .plan-price { color: var(--white); }
+  .plan-period {
+    font-family: 'Jost', sans-serif;
+    font-weight: 200; font-size: 11px;
+    letter-spacing: 2px; color: var(--warm);
+    margin-bottom: 40px;
+  }
+  .plan-features { list-style: none; display: flex; flex-direction: column; gap: 14px; margin-bottom: 40px; }
+  .plan-features li {
+    font-size: 13px; line-height: 1.6;
+    color: var(--dark); opacity: 0.65;
+    padding-left: 16px; position: relative;
+  }
+  .plan-card.highlight .plan-features li { color: var(--white); opacity: 0.6; }
+  .plan-features li::before {
+    content: '—';
+    position: absolute; left: 0;
+    color: var(--accent); font-size: 10px;
+  }
+  .plan-btn {
+    width: 100%;
+    background: transparent;
+    border: 1px solid var(--sand);
+    color: var(--dark); padding: 14px;
+    font-family: 'Jost', sans-serif;
+    font-weight: 300; font-size: 11px;
+    letter-spacing: 4px; text-transform: uppercase;
+    cursor: pointer; transition: all 0.4s;
+  }
+  .plan-card.highlight .plan-btn { border-color: var(--warm); color: var(--white); }
+  .plan-btn:hover { background: var(--accent); border-color: var(--accent); color: var(--white); }
+
+  /* TIMETABLE */
+  .timetable { background: var(--off); padding: 120px 80px; }
+  .time-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 60px; }
+  .time-col { }
+  .time-day {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300; font-size: 11px;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 16px;
+    padding-bottom: 12px; border-bottom: 1px solid var(--light);
+  }
+  .time-slot {
+    background: var(--white);
+    padding: 14px 16px; margin-bottom: 8px;
+    transition: background 0.3s; cursor: pointer;
+  }
+  .time-slot:hover { background: var(--dark); }
+  .time-slot:hover .slot-time, .time-slot:hover .slot-class { color: var(--white); }
+  .slot-time {
+    font-family: 'Jost', sans-serif;
+    font-weight: 200; font-size: 11px;
+    letter-spacing: 1px; color: var(--warm);
+    transition: color 0.3s; margin-bottom: 4px;
+  }
+  .slot-class {
+    font-size: 13px; color: var(--dark);
+    font-weight: 400; transition: color 0.3s;
+  }
+  .time-slot.full { background: var(--light); cursor: default; }
+  .time-slot.full .slot-class::after { content: ' · 마감'; color: var(--warm); font-size: 11px; }
+
+  /* QUOTE STRIP */
+  .quote-strip {
+    background: var(--accent);
+    padding: 80px;
+    text-align: center;
+  }
+  .quote-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: clamp(24px, 3vw, 40px);
+    color: var(--white); line-height: 1.5; max-width: 720px; margin: 0 auto 24px;
+  }
+  .quote-author {
+    font-family: 'Jost', sans-serif;
+    font-weight: 200; font-size: 11px;
+    letter-spacing: 4px; text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* CONTACT */
+  .contact { padding: 160px 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 120px; }
+  .contact-left { }
+  .contact-info { margin-top: 48px; display: flex; flex-direction: column; gap: 28px; }
+  .contact-item { display: flex; gap: 20px; align-items: flex-start; }
+  .contact-icon { font-size: 18px; opacity: 0.5; margin-top: 2px; flex-shrink: 0; }
+  .contact-text { font-size: 14px; line-height: 1.8; color: var(--dark); opacity: 0.65; }
+  .contact-label {
+    font-family: 'Jost', sans-serif;
+    font-weight: 200; font-size: 10px;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 6px;
+  }
+  .contact-right { }
+  .form-group { margin-bottom: 24px; }
+  .form-label {
+    display: block;
+    font-family: 'Jost', sans-serif;
+    font-weight: 200; font-size: 10px;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 10px;
+  }
+  .form-input, .form-select, .form-textarea {
+    width: 100%; padding: 14px 0;
+    background: transparent; border: none;
+    border-bottom: 1px solid var(--sand);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 300; font-size: 14px;
+    color: var(--dark); outline: none;
+    transition: border-color 0.3s;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-bottom-color: var(--accent);
+  }
+  .form-textarea { height: 80px; resize: none; }
+  .form-submit {
+    width: 100%; padding: 18px;
+    background: var(--dark); color: var(--white);
+    border: none; cursor: pointer;
+    font-family: 'Jost', sans-serif;
+    font-weight: 300; font-size: 12px;
+    letter-spacing: 4px; text-transform: uppercase;
+    transition: background 0.4s; margin-top: 8px;
+  }
+  .form-submit:hover { background: var(--accent); }
+
+  /* FOOTER */
+  footer {
+    background: var(--black);
+    padding: 60px 80px;
+    display: grid; grid-template-columns: 1.5fr 1fr 1fr;
+    gap: 60px;
+  }
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300; font-size: 28px;
+    letter-spacing: 8px; text-transform: uppercase;
+    color: var(--white); margin-bottom: 16px;
+  }
+  .footer-desc { font-size: 13px; color: var(--warm); line-height: 1.8; opacity: 0.7; }
+  .footer-col-title {
+    font-family: 'Jost', sans-serif;
+    font-weight: 200; font-size: 9px;
+    letter-spacing: 4px; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 20px;
+  }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-links a { color: var(--warm); text-decoration: none; font-size: 13px; opacity: 0.6; transition: opacity 0.3s; }
+  .footer-links a:hover { opacity: 1; }
+  .footer-bottom {
+    background: var(--black); border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 20px 80px; display: flex; justify-content: space-between;
+    font-family: 'Jost', sans-serif; font-weight: 200;
+    font-size: 11px; letter-spacing: 1px; color: #444;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes rotateSlow {
+    from { transform: rotate(0deg); } to { transform: rotate(360deg); }
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 20px 24px; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .hero-left { padding: 120px 24px 80px; }
+    .philosophy { grid-template-columns: 1fr; padding: 80px 24px; gap: 48px; }
+    .philosophy-left { position: static; }
+    .classes, .pricing, .timetable { padding: 80px 24px; }
+    .classes-list .class-row { grid-template-columns: 1fr; gap: 12px; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .time-grid { grid-template-columns: 1fr 1fr; }
+    .quote-strip { padding: 60px 24px; }
+    .contact { grid-template-columns: 1fr; padding: 80px 24px; gap: 60px; }
+    footer { grid-template-columns: 1fr; padding: 48px 24px; }
+    .footer-bottom { padding: 16px 24px; flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <div class="nav-logo">BLANC</div>
+  <ul class="nav-links">
+    <li><a href="#philosophy">Philosophy</a></li>
+    <li><a href="#classes">Classes</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#contact">예약</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-tag">Mapo · Seoul · Pilates Studio</p>
+    <h1 class="hero-title">
+      몸을 <em>알아가는</em><br>
+      <strong>조용한 여정</strong>
+    </h1>
+    <p class="hero-body">BLANC Studio는 소음을 거둬낸 공간에서 당신의 몸이 말하는 것에 집중합니다. 필라테스, 요가, 바레 — 천천히, 정확하게.</p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn-main">체험 수업 예약</a>
+      <a href="#classes" class="btn-ghost">클래스 보기</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-visual-circle">
+      <span class="studio-icon">🌿</span>
+    </div>
+    <div class="hero-badge">
+      <div class="hero-badge-num">500+</div>
+      <div class="hero-badge-label">Active Members</div>
+    </div>
+  </div>
+</section>
+
+<section class="philosophy" id="philosophy">
+  <div class="philosophy-left">
+    <p class="section-label">Our Philosophy</p>
+    <h2 class="section-title">느리게,<br><em>깊이,</em><br>정확하게</h2>
+  </div>
+  <div class="philosophy-right">
+    <p class="philosophy-quote">"The mind, when housed within a healthful body, possesses a glorious sense of power." — Joseph Pilates</p>
+    <p class="philosophy-body">BLANC Studio는 무엇보다 '정확성'을 추구합니다. 100번의 잘못된 동작보다, 10번의 완벽한 움직임이 더 많은 것을 바꿉니다. 우리 강사진은 모두 국제 자격증을 보유하고 있으며, 수업 정원은 최대 6인으로 제한됩니다.</p>
+    <p class="philosophy-body">마포구 조용한 골목 2층, 나무 바닥과 자연광으로 채운 스튜디오. 이곳에서의 한 시간은 당신의 나머지 하루를 다르게 만들 것입니다.</p>
+    <div class="philosophy-grid">
+      <div class="philo-card">
+        <p class="philo-num">01</p>
+        <p class="philo-title">소규모 수업</p>
+        <p class="philo-desc">최대 6인 정원. 강사의 시선이 당신에게 닿습니다.</p>
+      </div>
+      <div class="philo-card">
+        <p class="philo-num">02</p>
+        <p class="philo-title">국제 자격</p>
+        <p class="philo-desc">모든 강사 STOTT Pilates / YGA 국제 자격 보유</p>
+      </div>
+      <div class="philo-card">
+        <p class="philo-num">03</p>
+        <p class="philo-title">프리미엄 기구</p>
+        <p class="philo-desc">Balanced Body 리포머, Cadillac, Chair 풀 세트</p>
+      </div>
+      <div class="philo-card">
+        <p class="philo-num">04</p>
+        <p class="philo-title">맞춤 설계</p>
+        <p class="philo-desc">첫 방문 시 체형 분석 후 개인 맞춤 프로그램 설계</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="classes" id="classes">
+  <div class="classes-header">
+    <p class="section-label" style="color: var(--sand);">What We Offer</p>
+    <h2 class="classes-title">Our <em>Classes</em></h2>
+  </div>
+  <div class="classes-list">
+    <div class="class-row">
+      <span class="class-idx">01</span>
+      <div>
+        <p class="class-info-name">Reformer Pilates</p>
+        <p class="class-info-sub">기구 필라테스 · 전신 근력 · 체형 교정</p>
+      </div>
+      <span class="class-level">All Levels</span>
+      <span class="class-arrow">→</span>
+    </div>
+    <div class="class-row">
+      <span class="class-idx">02</span>
+      <div>
+        <p class="class-info-name">Mat Pilates</p>
+        <p class="class-info-sub">매트 필라테스 · 코어 강화 · 유연성</p>
+      </div>
+      <span class="class-level">Beginner</span>
+      <span class="class-arrow">→</span>
+    </div>
+    <div class="class-row">
+      <span class="class-idx">03</span>
+      <div>
+        <p class="class-info-name">Vinyasa Yoga</p>
+        <p class="class-info-sub">흐름 요가 · 호흡 연결 · 내면 집중</p>
+      </div>
+      <span class="class-level">Intermediate</span>
+      <span class="class-arrow">→</span>
+    </div>
+    <div class="class-row">
+      <span class="class-idx">04</span>
+      <div>
+        <p class="class-info-name">Barre</p>
+        <p class="class-info-sub">발레 기반 · 하체 라인 · 균형감</p>
+      </div>
+      <span class="class-level">All Levels</span>
+      <span class="class-arrow">→</span>
+    </div>
+    <div class="class-row">
+      <span class="class-idx">05</span>
+      <div>
+        <p class="class-info-name">1:1 Private Session</p>
+        <p class="class-info-sub">개인 레슨 · 재활 · 목표 집중 프로그램</p>
+      </div>
+      <span class="class-level">Customized</span>
+      <span class="class-arrow">→</span>
+    </div>
+    <div class="class-row">
+      <span class="class-idx">06</span>
+      <div>
+        <p class="class-info-name">Yin Yoga & Stretch</p>
+        <p class="class-info-sub">음 요가 · 깊은 이완 · 수면 개선</p>
+      </div>
+      <span class="class-level">All Levels</span>
+      <span class="class-arrow">→</span>
+    </div>
+  </div>
+</section>
+
+<section class="pricing" id="pricing">
+  <div class="pricing-inner">
+    <h2 class="pricing-title">Membership<br><em>Plans</em></h2>
+    <div class="pricing-grid">
+      <div class="plan-card">
+        <p class="plan-name">Light</p>
+        <p class="plan-price">₩99,000</p>
+        <p class="plan-period">월 4회 이용권</p>
+        <ul class="plan-features">
+          <li>원하는 클래스 선택 가능</li>
+          <li>매트·기구 모두 이용</li>
+          <li>샤워실 이용</li>
+          <li>이월 불가</li>
+        </ul>
+        <button class="plan-btn">시작하기</button>
+      </div>
+      <div class="plan-card highlight">
+        <p class="plan-name">Regular</p>
+        <p class="plan-price">₩189,000</p>
+        <p class="plan-period">월 8회 이용권</p>
+        <ul class="plan-features">
+          <li>전 클래스 자유 선택</li>
+          <li>기구 필라테스 포함</li>
+          <li>체형 분석 월 1회</li>
+          <li>1회 이월 가능</li>
+        </ul>
+        <button class="plan-btn">시작하기</button>
+      </div>
+      <div class="plan-card">
+        <p class="plan-name">Unlimited</p>
+        <p class="plan-price">₩298,000</p>
+        <p class="plan-period">월 무제한 이용권</p>
+        <ul class="plan-features">
+          <li>전 클래스 무제한</li>
+          <li>프라이빗 1회 포함</li>
+          <li>영양 상담 월 1회</li>
+          <li>게스트 초대 월 1회</li>
+        </ul>
+        <button class="plan-btn">시작하기</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="timetable">
+  <p class="section-label">Weekly Schedule</p>
+  <h2 class="section-title">타임테이블</h2>
+  <div class="time-grid">
+    <div class="time-col">
+      <p class="time-day">월요일</p>
+      <div class="time-slot"><div class="slot-time">07:00</div><div class="slot-class">Mat Pilates</div></div>
+      <div class="time-slot full"><div class="slot-time">10:00</div><div class="slot-class">Reformer</div></div>
+      <div class="time-slot"><div class="slot-time">19:00</div><div class="slot-class">Vinyasa Yoga</div></div>
+      <div class="time-slot"><div class="slot-time">20:30</div><div class="slot-class">Yin Yoga</div></div>
+    </div>
+    <div class="time-col">
+      <p class="time-day">화요일</p>
+      <div class="time-slot"><div class="slot-time">09:00</div><div class="slot-class">Barre</div></div>
+      <div class="time-slot"><div class="slot-time">11:00</div><div class="slot-class">Mat Pilates</div></div>
+      <div class="time-slot full"><div class="slot-time">18:00</div><div class="slot-class">Reformer</div></div>
+      <div class="time-slot"><div class="slot-time">20:00</div><div class="slot-class">Barre</div></div>
+    </div>
+    <div class="time-col">
+      <p class="time-day">수요일</p>
+      <div class="time-slot"><div class="slot-time">07:00</div><div class="slot-class">Vinyasa</div></div>
+      <div class="time-slot"><div class="slot-time">10:00</div><div class="slot-class">Reformer</div></div>
+      <div class="time-slot full"><div class="slot-time">19:00</div><div class="slot-class">Mat Pilates</div></div>
+      <div class="time-slot"><div class="slot-time">20:30</div><div class="slot-class">Yin Yoga</div></div>
+    </div>
+    <div class="time-col">
+      <p class="time-day">목요일</p>
+      <div class="time-slot full"><div class="slot-time">09:00</div><div class="slot-class">Barre</div></div>
+      <div class="time-slot"><div class="slot-time">11:00</div><div class="slot-class">Reformer</div></div>
+      <div class="time-slot"><div class="slot-time">18:00</div><div class="slot-class">Vinyasa</div></div>
+      <div class="time-slot"><div class="slot-time">20:00</div><div class="slot-class">Mat Pilates</div></div>
+    </div>
+    <div class="time-col">
+      <p class="time-day">금/토</p>
+      <div class="time-slot"><div class="slot-time">08:00</div><div class="slot-class">Reformer</div></div>
+      <div class="time-slot"><div class="slot-time">10:00</div><div class="slot-class">Barre</div></div>
+      <div class="time-slot full"><div class="slot-time">14:00</div><div class="slot-class">Mat Pilates</div></div>
+      <div class="time-slot"><div class="slot-time">16:00</div><div class="slot-class">Yin Yoga</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="quote-strip">
+  <p class="quote-text">"당신의 몸은 당신이 사는 유일한 장소입니다. 아름답게 가꾸세요."</p>
+  <p class="quote-author">— BLANC Studio</p>
+</div>
+
+<section class="contact" id="contact">
+  <div class="contact-left">
+    <p class="section-label">Get in Touch</p>
+    <h2 class="section-title">체험 수업<br><em>예약하기</em></h2>
+    <div class="contact-info">
+      <div class="contact-item">
+        <span class="contact-icon">📍</span>
+        <div>
+          <p class="contact-label">Location</p>
+          <p class="contact-text">서울 마포구 연남로 116, 2층<br>홍대입구역 3번 출구 도보 8분</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <span class="contact-icon">⏰</span>
+        <div>
+          <p class="contact-label">Hours</p>
+          <p class="contact-text">월–금 07:00 – 21:00<br>토–일 08:00 – 18:00</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <span class="contact-icon">📞</span>
+        <div>
+          <p class="contact-label">Contact</p>
+          <p class="contact-text">02-3456-7890<br>@blanc_studio</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="contact-right">
+    <form>
+      <div class="form-group">
+        <label class="form-label">이름</label>
+        <input type="text" class="form-input" placeholder="홍길동">
+      </div>
+      <div class="form-group">
+        <label class="form-label">연락처</label>
+        <input type="tel" class="form-input" placeholder="010-0000-0000">
+      </div>
+      <div class="form-group">
+        <label class="form-label">관심 클래스</label>
+        <select class="form-select">
+          <option value="">선택해주세요</option>
+          <option>Reformer Pilates</option>
+          <option>Mat Pilates</option>
+          <option>Vinyasa Yoga</option>
+          <option>Barre</option>
+          <option>1:1 Private Session</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">문의 내용</label>
+        <textarea class="form-textarea" placeholder="운동 경험, 목표, 궁금한 점 등 자유롭게 적어주세요."></textarea>
+      </div>
+      <button type="submit" class="form-submit">체험 수업 신청하기</button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div>
+    <p class="footer-logo">BLANC</p>
+    <p class="footer-desc">몸과 마음의 균형을 찾는<br>조용한 공간, 마포구 연남동.<br><br>서울 마포구 연남로 116, 2층</p>
+  </div>
+  <div>
+    <p class="footer-col-title">Classes</p>
+    <ul class="footer-links">
+      <li><a href="#">Reformer Pilates</a></li>
+      <li><a href="#">Mat Pilates</a></li>
+      <li><a href="#">Vinyasa Yoga</a></li>
+      <li><a href="#">Barre</a></li>
+      <li><a href="#">Private Session</a></li>
+    </ul>
+  </div>
+  <div>
+    <p class="footer-col-title">Follow</p>
+    <ul class="footer-links">
+      <li><a href="#">Instagram @blanc_studio</a></li>
+      <li><a href="#">Naver 예약</a></li>
+      <li><a href="#">카카오톡 채널</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <span>© 2026 BLANC Studio. All rights reserved.</span>
+  <span>Yeonnam-dong, Mapo</span>
+</div>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const nav = document.getElementById('navbar');
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+</script>
+</body>
+</html>
