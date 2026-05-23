@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IRONCLAD GYM — 강남 프리미엄 헬스장</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,800;0,900;1,800&family=Noto+Sans+KR:wght@300;400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0A0A0A;
+    --dark: #111111;
+    --card: #181818;
+    --gold: #D4A843;
+    --gold-dim: #8A6B28;
+    --white: #F0F0F0;
+    --gray: #888888;
+    --red: #C0392B;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Noto Sans KR', sans-serif;
+    overflow-x: hidden;
+    cursor: crosshair;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    width: 20px; height: 20px;
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    position: fixed; pointer-events: none; z-index: 9999;
+    transition: transform 0.15s, opacity 0.3s;
+    transform: translate(-50%, -50%);
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(10,10,10,0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(212,168,67,0.2);
+    padding: 0 60px;
+    display: flex; justify-content: space-between; align-items: center;
+    height: 72px;
+  }
+  .nav-logo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; font-size: 28px;
+    letter-spacing: 6px; text-transform: uppercase;
+    color: var(--white);
+  }
+  .nav-logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 40px; list-style: none; }
+  .nav-links a {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--gray); text-decoration: none; transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-cta {
+    background: var(--gold);
+    color: var(--black) !important;
+    padding: 10px 24px; font-weight: 700 !important;
+    transition: background 0.3s !important;
+  }
+  .nav-cta:hover { background: var(--white) !important; color: var(--black) !important; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center;
+    padding: 140px 60px 100px;
+    position: relative; overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      repeating-linear-gradient(90deg, rgba(212,168,67,0.03) 0px, rgba(212,168,67,0.03) 1px, transparent 1px, transparent 80px),
+      repeating-linear-gradient(0deg, rgba(212,168,67,0.03) 0px, rgba(212,168,67,0.03) 1px, transparent 1px, transparent 80px);
+  }
+  .hero-glow {
+    position: absolute; top: 20%; right: -200px;
+    width: 600px; height: 600px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,168,67,0.15), transparent 70%);
+    animation: pulse 4s ease-in-out infinite;
+  }
+  .hero-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; letter-spacing: 5px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 28px;
+    animation: fadeRight 1s 0.2s both;
+  }
+  .hero-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; font-style: italic;
+    font-size: clamp(80px, 13vw, 180px);
+    line-height: 0.9; text-transform: uppercase;
+    position: relative; z-index: 1;
+    animation: fadeRight 1s 0.4s both;
+  }
+  .hero-title .line2 { color: var(--gold); -webkit-text-stroke: 0px; }
+  .hero-title .outline {
+    -webkit-text-stroke: 2px var(--white);
+    color: transparent;
+  }
+  .hero-sub {
+    font-size: 16px; line-height: 1.8;
+    color: var(--gray); max-width: 420px;
+    margin-top: 32px;
+    animation: fadeRight 1s 0.6s both;
+  }
+  .hero-actions {
+    display: flex; gap: 20px; margin-top: 48px; flex-wrap: wrap;
+    animation: fadeRight 1s 0.8s both;
+  }
+  .btn-primary {
+    background: var(--gold);
+    color: var(--black); padding: 18px 44px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800; font-size: 16px;
+    letter-spacing: 3px; text-transform: uppercase;
+    text-decoration: none; border: none; cursor: pointer;
+    transition: all 0.3s; display: inline-block;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  }
+  .btn-primary:hover { background: var(--white); transform: translateY(-3px); }
+  .btn-secondary {
+    border: 1px solid rgba(240,240,240,0.3);
+    color: var(--white); padding: 18px 44px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 16px;
+    letter-spacing: 3px; text-transform: uppercase;
+    text-decoration: none; cursor: pointer;
+    transition: all 0.3s; display: inline-block;
+  }
+  .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+
+  .hero-stats {
+    position: absolute; bottom: 60px; right: 60px;
+    display: flex; gap: 60px;
+    animation: fadeIn 1s 1.2s both;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; font-size: 52px; color: var(--gold);
+    line-height: 1;
+  }
+  .stat-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--gray); margin-top: 6px;
+  }
+
+  /* TICKER */
+  .ticker {
+    background: var(--gold);
+    padding: 14px 0; overflow: hidden;
+  }
+  .ticker-inner {
+    display: flex; gap: 80px; white-space: nowrap;
+    animation: marquee 15s linear infinite;
+  }
+  .ticker-inner span {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800; font-size: 16px;
+    letter-spacing: 4px; text-transform: uppercase;
+    color: var(--black);
+  }
+
+  /* PROGRAMS */
+  .programs { padding: 120px 60px; }
+  .section-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; font-style: italic; font-size: clamp(48px, 6vw, 80px);
+    text-transform: uppercase; line-height: 1;
+    margin-bottom: 60px;
+  }
+  .programs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+  .program-card {
+    background: var(--card);
+    padding: 48px 36px; position: relative;
+    overflow: hidden; cursor: pointer;
+    transition: background 0.4s;
+    border-top: 3px solid transparent;
+  }
+  .program-card:hover { background: #1F1F1F; border-top-color: var(--gold); }
+  .program-card::before {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+    background: var(--gold); transform: scaleX(0); transform-origin: left;
+    transition: transform 0.4s;
+  }
+  .program-card:hover::before { transform: scaleX(1); }
+  .program-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; font-size: 64px;
+    color: rgba(212,168,67,0.1); position: absolute;
+    top: 20px; right: 20px; line-height: 1;
+    transition: color 0.4s;
+  }
+  .program-card:hover .program-num { color: rgba(212,168,67,0.25); }
+  .program-icon { font-size: 36px; margin-bottom: 20px; }
+  .program-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800; font-size: 28px;
+    text-transform: uppercase; letter-spacing: 2px;
+    margin-bottom: 12px; color: var(--white);
+  }
+  .program-desc { font-size: 14px; color: var(--gray); line-height: 1.7; margin-bottom: 24px; }
+  .program-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  /* PRICING */
+  .pricing {
+    background: var(--dark);
+    padding: 120px 60px;
+  }
+  .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 60px; }
+  .price-card {
+    background: var(--card);
+    padding: 48px 36px;
+    position: relative; transition: transform 0.3s;
+  }
+  .price-card.featured {
+    background: var(--gold);
+    transform: scale(1.05);
+  }
+  .price-card:not(.featured):hover { transform: translateY(-8px); }
+  .price-badge {
+    position: absolute; top: -12px; left: 36px;
+    background: var(--red); color: var(--white);
+    font-family: 'Space Mono', monospace;
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    padding: 4px 12px;
+  }
+  .price-tier {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800; font-size: 14px;
+    letter-spacing: 4px; text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .price-card.featured .price-tier { color: var(--black); }
+  .price-amount {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; font-size: 60px; line-height: 1;
+    margin-bottom: 4px;
+  }
+  .price-card.featured .price-amount { color: var(--black); }
+  .price-period {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; color: var(--gray);
+    margin-bottom: 36px;
+  }
+  .price-card.featured .price-period { color: rgba(10,10,10,0.6); }
+  .price-features { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 36px; }
+  .price-features li {
+    font-size: 13px; color: var(--gray);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .price-card.featured .price-features li { color: rgba(10,10,10,0.75); }
+  .price-features li::before {
+    content: '✓';
+    color: var(--gold); font-weight: 700; font-size: 12px;
+    flex-shrink: 0;
+  }
+  .price-card.featured .price-features li::before { color: var(--black); }
+  .price-btn {
+    width: 100%; padding: 16px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800; font-size: 15px;
+    letter-spacing: 3px; text-transform: uppercase;
+    background: rgba(240,240,240,0.1);
+    color: var(--white); border: none; cursor: pointer;
+    transition: all 0.3s;
+  }
+  .price-card.featured .price-btn { background: var(--black); color: var(--gold); }
+  .price-btn:hover { background: var(--gold); color: var(--black); }
+
+  /* TRAINERS */
+  .trainers { padding: 120px 60px; }
+  .trainers-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 60px; }
+  .trainer-card { position: relative; overflow: hidden; cursor: pointer; }
+  .trainer-photo {
+    aspect-ratio: 3/4;
+    background: var(--card);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 60px;
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: transform 0.5s;
+    position: relative;
+  }
+  .trainer-card:hover .trainer-photo { transform: scale(1.05); }
+  .trainer-overlay {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(transparent, rgba(10,10,10,0.95));
+    padding: 40px 24px 24px;
+    transform: translateY(0);
+  }
+  .trainer-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800; font-size: 22px;
+    text-transform: uppercase; letter-spacing: 2px;
+  }
+  .trainer-spec {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px; letter-spacing: 2px;
+    color: var(--gold); margin-top: 4px;
+    text-transform: uppercase;
+  }
+  .trainer-certs { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .cert-tag {
+    background: rgba(212,168,67,0.2);
+    color: var(--gold); padding: 3px 8px;
+    font-family: 'Space Mono', monospace; font-size: 9px;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+
+  /* CTA BAND */
+  .cta-band {
+    background: var(--gold);
+    padding: 80px 60px;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 40px; flex-wrap: wrap;
+  }
+  .cta-band h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; font-style: italic;
+    font-size: clamp(36px, 5vw, 60px);
+    text-transform: uppercase; color: var(--black); line-height: 1;
+  }
+  .cta-band-btn {
+    background: var(--black); color: var(--white);
+    padding: 20px 52px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800; font-size: 18px;
+    letter-spacing: 4px; text-transform: uppercase;
+    text-decoration: none; white-space: nowrap;
+    transition: all 0.3s;
+    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+  }
+  .cta-band-btn:hover { background: var(--white); color: var(--black); }
+
+  /* FOOTER */
+  footer {
+    background: var(--black);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 60px; display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr; gap: 60px;
+  }
+  .footer-logo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; font-size: 32px;
+    letter-spacing: 6px; text-transform: uppercase; margin-bottom: 16px;
+  }
+  .footer-logo span { color: var(--gold); }
+  .footer-desc { font-size: 13px; color: var(--gray); line-height: 1.8; }
+  .footer-col-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 20px;
+  }
+  .footer-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-list a { color: var(--gray); text-decoration: none; font-size: 13px; transition: color 0.3s; }
+  .footer-list a:hover { color: var(--white); }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 20px 60px; display: flex; justify-content: space-between;
+    font-family: 'Space Mono', monospace; font-size: 10px; color: #444;
+  }
+
+  @keyframes fadeRight {
+    from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.1); opacity: 1; }
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 0 24px; }
+    .nav-links { display: none; }
+    .hero { padding: 120px 24px 80px; }
+    .hero-stats { position: static; margin-top: 48px; justify-content: flex-start; }
+    .programs, .pricing, .trainers { padding: 80px 24px; }
+    .programs-grid, .pricing-grid, .trainers-grid { grid-template-columns: 1fr; }
+    .price-card.featured { transform: scale(1); }
+    .cta-band { padding: 60px 24px; flex-direction: column; text-align: center; }
+    footer { grid-template-columns: 1fr; padding: 48px 24px; }
+    .footer-bottom { padding: 16px 24px; flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+
+<nav>
+  <div class="nav-logo">IRON<span>CLAD</span></div>
+  <ul class="nav-links">
+    <li><a href="#programs">Programs</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#trainers">Trainers</a></li>
+    <li><a href="#contact" class="nav-cta">Free Trial</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-glow"></div>
+  <p class="hero-eyebrow">Gangnam Premium Gym · Since 2019</p>
+  <h1 class="hero-title">
+    <span class="outline">PUSH</span><br>
+    <span class="line2">YOUR</span><br>
+    <span>LIMITS</span>
+  </h1>
+  <p class="hero-sub">한계는 생각 속에만 존재합니다. IRONCLAD에서 당신의 가장 강한 버전을 만나세요.</p>
+  <div class="hero-actions">
+    <a href="#" class="btn-primary">무료 체험 신청</a>
+    <a href="#programs" class="btn-secondary">프로그램 보기</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">2,400+</div><div class="stat-label">Active Members</div></div>
+    <div class="stat"><div class="stat-num">18</div><div class="stat-label">PT Trainers</div></div>
+    <div class="stat"><div class="stat-num">96%</div><div class="stat-label">Satisfaction</div></div>
+  </div>
+</section>
+
+<div class="ticker">
+  <div class="ticker-inner">
+    <span>Weight Training</span><span>·</span>
+    <span>Functional Fitness</span><span>·</span>
+    <span>CrossFit</span><span>·</span>
+    <span>Personal Training</span><span>·</span>
+    <span>Nutrition Coach</span><span>·</span>
+    <span>강남 No.1</span><span>·</span>
+    <span>Weight Training</span><span>·</span>
+    <span>Functional Fitness</span><span>·</span>
+    <span>CrossFit</span><span>·</span>
+    <span>Personal Training</span><span>·</span>
+    <span>Nutrition Coach</span><span>·</span>
+    <span>강남 No.1</span><span>·</span>
+  </div>
+</div>
+
+<section class="programs" id="programs">
+  <p class="section-eyebrow">What We Offer</p>
+  <h2 class="section-title">Programs</h2>
+  <div class="programs-grid">
+    <div class="program-card">
+      <span class="program-num">01</span>
+      <div class="program-icon">🏋️</div>
+      <p class="program-name">Weight Training</p>
+      <p class="program-desc">초급부터 고급까지 체계적인 웨이트 트레이닝 프로그램. 바벨, 덤벨, 머신 구역 완전 분리 운영.</p>
+      <p class="program-tag">→ 365일 24시간</p>
+    </div>
+    <div class="program-card">
+      <span class="program-num">02</span>
+      <div class="program-icon">⚡</div>
+      <p class="program-name">Functional Fitness</p>
+      <p class="program-desc">일상 동작 기반의 기능성 훈련. 전신 협응력, 유연성, 코어 강화를 동시에.</p>
+      <p class="program-tag">→ 주 6회 그룹 클래스</p>
+    </div>
+    <div class="program-card">
+      <span class="program-num">03</span>
+      <div class="program-icon">🔥</div>
+      <p class="program-name">CrossFit WOD</p>
+      <p class="program-desc">매일 달라지는 운동 메뉴(WOD). 고강도 인터벌로 체지방 감소와 근력 향상을 동시에.</p>
+      <p class="program-tag">→ 공인 CrossFit 코치</p>
+    </div>
+    <div class="program-card">
+      <span class="program-num">04</span>
+      <div class="program-icon">🎯</div>
+      <p class="program-name">Personal Training</p>
+      <p class="program-desc">1:1 맞춤 PT. 체성분 분석부터 식단 코칭까지 목표 달성을 위한 완전 개인화 프로그램.</p>
+      <p class="program-tag">→ 1:1 전담 트레이너</p>
+    </div>
+    <div class="program-card">
+      <span class="program-num">05</span>
+      <div class="program-icon">🧘</div>
+      <p class="program-name">Mobility & Recovery</p>
+      <p class="program-desc">스트레칭, 폼롤러, 요가 퓨전 클래스. 부상 예방과 운동 효율 극대화.</p>
+      <p class="program-tag">→ 주 3회 오전 클래스</p>
+    </div>
+    <div class="program-card">
+      <span class="program-num">06</span>
+      <div class="program-icon">🥗</div>
+      <p class="program-name">Nutrition Coaching</p>
+      <p class="program-desc">공인 영양사와 함께하는 체계적인 식단 설계. 목표별 맞춤 식이요법 제공.</p>
+      <p class="program-tag">→ 국가공인 영양사</p>
+    </div>
+  </div>
+</section>
+
+<section class="pricing" id="pricing">
+  <p class="section-eyebrow">Membership</p>
+  <h2 class="section-title">Pricing</h2>
+  <div class="pricing-grid">
+    <div class="price-card">
+      <p class="price-tier">Basic</p>
+      <p class="price-amount">₩89,000</p>
+      <p class="price-period">/ 월</p>
+      <ul class="price-features">
+        <li>웨이트 존 자유 이용</li>
+        <li>유산소 구역 이용</li>
+        <li>샤워실·락커 이용</li>
+        <li>운동복 대여 (주 3회)</li>
+      </ul>
+      <button class="price-btn">시작하기</button>
+    </div>
+    <div class="price-card featured">
+      <span class="price-badge">BEST</span>
+      <p class="price-tier">Premium</p>
+      <p class="price-amount">₩149,000</p>
+      <p class="price-period">/ 월</p>
+      <ul class="price-features">
+        <li>전 구역 무제한 이용</li>
+        <li>그룹 클래스 무제한</li>
+        <li>체성분 분석 월 1회</li>
+        <li>스포츠 마사지 월 1회</li>
+        <li>영양 상담 월 1회</li>
+      </ul>
+      <button class="price-btn">시작하기</button>
+    </div>
+    <div class="price-card">
+      <p class="price-tier">PT Package</p>
+      <p class="price-amount">₩390,000</p>
+      <p class="price-period">/ 10회</p>
+      <ul class="price-features">
+        <li>1:1 전담 트레이너</li>
+        <li>맞춤 운동 프로그램</li>
+        <li>식단 코칭 포함</li>
+        <li>스마트 인바디 분석</li>
+        <li>Premium 멤버십 포함</li>
+      </ul>
+      <button class="price-btn">상담 신청</button>
+    </div>
+  </div>
+</section>
+
+<section class="trainers" id="trainers">
+  <p class="section-eyebrow">Our Team</p>
+  <h2 class="section-title">Trainers</h2>
+  <div class="trainers-grid">
+    <div class="trainer-card">
+      <div class="trainer-photo">💪</div>
+      <div class="trainer-overlay">
+        <p class="trainer-name">김준혁</p>
+        <p class="trainer-spec">Head Trainer · PT 전문</p>
+        <div class="trainer-certs">
+          <span class="cert-tag">NSCA-CPT</span>
+          <span class="cert-tag">CrossFit L2</span>
+        </div>
+      </div>
+    </div>
+    <div class="trainer-card">
+      <div class="trainer-photo">🏆</div>
+      <div class="trainer-overlay">
+        <p class="trainer-name">박서연</p>
+        <p class="trainer-spec">여성 전문 트레이너</p>
+        <div class="trainer-certs">
+          <span class="cert-tag">ACSM</span>
+          <span class="cert-tag">Pilates</span>
+        </div>
+      </div>
+    </div>
+    <div class="trainer-card">
+      <div class="trainer-photo">⚡</div>
+      <div class="trainer-overlay">
+        <p class="trainer-name">이태양</p>
+        <p class="trainer-spec">CrossFit · 기능성 훈련</p>
+        <div class="trainer-certs">
+          <span class="cert-tag">CrossFit L3</span>
+          <span class="cert-tag">NASM</span>
+        </div>
+      </div>
+    </div>
+    <div class="trainer-card">
+      <div class="trainer-photo">🎯</div>
+      <div class="trainer-overlay">
+        <p class="trainer-name">최민지</p>
+        <p class="trainer-spec">재활 · Mobility 전문</p>
+        <div class="trainer-certs">
+          <span class="cert-tag">물리치료사</span>
+          <span class="cert-tag">FMS</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="cta-band" id="contact">
+  <h2>지금 시작하면<br>내일이 달라집니다</h2>
+  <a href="#" class="cta-band-btn">무료 체험 예약 →</a>
+</div>
+
+<footer>
+  <div>
+    <p class="footer-logo">IRON<span>CLAD</span></p>
+    <p class="footer-desc">서울 강남구 테헤란로 142<br>02-9876-5432<br>24시간 연중무휴<br><br>주차: 건물 지하 2층 (3시간 무료)</p>
+  </div>
+  <div>
+    <p class="footer-col-title">Quick Links</p>
+    <ul class="footer-list">
+      <li><a href="#">프로그램 안내</a></li>
+      <li><a href="#">멤버십 등록</a></li>
+      <li><a href="#">PT 상담 예약</a></li>
+      <li><a href="#">시설 투어</a></li>
+    </ul>
+  </div>
+  <div>
+    <p class="footer-col-title">Follow Us</p>
+    <ul class="footer-list">
+      <li><a href="#">Instagram @ironclad_gym</a></li>
+      <li><a href="#">YouTube 운동 영상</a></li>
+      <li><a href="#">카카오톡 상담</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <span>© 2026 IRONCLAD GYM. All rights reserved.</span>
+  <span>Gangnam, Seoul</span>
+</div>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', (e) => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+  });
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => { cursor.style.transform = 'translate(-50%, -50%) scale(2)'; cursor.style.borderColor = 'var(--gold)'; });
+    el.addEventListener('mouseleave', () => { cursor.style.transform = 'translate(-50%, -50%) scale(1)'; });
+  });
+</script>
+</body>
+</html>
